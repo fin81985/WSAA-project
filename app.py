@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-
 from models import db, Expense
 from flask_cors import CORS
 
@@ -20,8 +19,6 @@ with app.app_context():
 def home():
     return "Expense Tracker API is running!"
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 @app.route('/expenses', methods=['POST'])
 def add_expense():
@@ -39,15 +36,18 @@ def add_expense():
 
     return jsonify(new_expense.to_dict()), 201
 
+
 @app.route('/expenses', methods=['GET'])
 def get_expenses():
     expenses = Expense.query.all()
     return jsonify([e.to_dict() for e in expenses])
 
+
 @app.route('/expenses/<int:id>', methods=['GET'])
 def get_expense(id):
     expense = Expense.query.get_or_404(id)
     return jsonify(expense.to_dict())
+
 
 @app.route('/expenses/<int:id>', methods=['PUT'])
 def update_expense(id):
@@ -72,3 +72,9 @@ def delete_expense(id):
     db.session.commit()
 
     return jsonify({"message": "Deleted successfully"})
+
+
+# ✅ ALWAYS LAST
+if __name__ == '__main__':
+    app.run(debug=True)
+
