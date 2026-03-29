@@ -2,20 +2,19 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Book(db.Model):
-    __tablename__ = "books"
-
+class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    author = db.Column(db.String(200), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
-    isbn = db.Column(db.String(20), unique=True, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200))
+    date = db.Column(db.String(50))
 
     def to_dict(self):
         return {
             "id": self.id,
-            "title": self.title,
-            "author": self.author,
-            "year": self.year,
-            "isbn": self.isbn,
+            "amount": self.amount,
+            "category": self.category,
+            "description": self.description,
+            "date": self.date
         }
+
