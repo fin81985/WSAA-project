@@ -2,8 +2,40 @@
 <html>
 <head>
     <title>Expense Tracker</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <h1>It works 🎉</h1>
+
+    <h1>💰 Expense Tracker</h1>
+
+    <h2>Total: €<span id="total">0</span></h2>
+
+    <!-- CHART -->
+    <canvas id="expenseChart" width="400" height="200"></canvas>
+
+    <!-- FORM -->
+    <div>
+        <input id="amount" placeholder="Amount">
+        <input id="category" placeholder="Category">
+        <input id="description" placeholder="Description">
+        <input id="date" type="date">
+
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
+
+    <hr>
+
+    <!-- EXPENSE LIST -->
+    <div id="expenseList"></div>
+
+    <!-- JS -->
+    <script src="/static/script.js"></script>
+
 </body>
 </html>
+
+
+
