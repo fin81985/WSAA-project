@@ -9,29 +9,22 @@
 
 <body>
 
-    <h1>💰 Expense Tracker</h1>
+    <h1>Expense Tracker</h1>
 
     <h2>Total: €<span id="total">0</span></h2>
 
-    <!-- CHART -->
-    <canvas id="expenseChart" width="400" height="200"></canvas>
+    <input id="amount" placeholder="Amount">
+    <input id="category" placeholder="Category">
+    <input id="description" placeholder="Description">
+    <input id="date" placeholder="Date">
 
-    <!-- FORM -->
-    <div>
-        <input id="amount" placeholder="Amount">
-        <input id="category" placeholder="Category">
-        <input id="description" placeholder="Description">
-        <input id="date" type="date">
+    <button id="submitBtn" onclick="addExpense()">Add Expense</button>
 
-        <button onclick="addExpense()">Add Expense</button>
-    </div>
-
-    <hr>
-
-    <!-- EXPENSE LIST -->
     <div id="expenseList"></div>
 
-    <!-- JS -->
+    <canvas id="expenseChart"></canvas>
+
+    <!-- Your JS -->
     <script src="/static/script.js"></script>
 
 </body>
