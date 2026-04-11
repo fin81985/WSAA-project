@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
-from models import db, Expense
 from flask_cors import CORS
+from models import db, Expense
+
 
 app = Flask(__name__)
 CORS(app)
@@ -78,3 +79,29 @@ def delete_expense(id):
 if __name__ == '__main__':
     app.run(debug=True)
 
+from flask import Flask
+from flask_cors import CORS
+from models import db
+
+app = Flask(__name__)
+CORS(app)
+
+# Database config (SQLite)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Connect database to app
+db.init_app(app)
+
+# Create database automatically
+with app.app_context():
+    db.create_all()
+
+# Test route
+@app.route('/')
+def home():
+    return "Expense Tracker API is running!"
+
+# Run app
+if __name__ == '__main__':
+    app.run(debug=True)
