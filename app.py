@@ -1,7 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from models import db, Expense
-
 
 app = Flask(__name__)
 CORS(app)
@@ -16,11 +15,12 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+# FRONTEND ROUTE
 @app.route('/')
 def home():
-    return "Expense Tracker API is running!"
+    return render_template('index.html')
 
-
+# CREATE
 @app.route('/expenses', methods=['POST'])
 def add_expense():
     data = request.json
@@ -37,19 +37,19 @@ def add_expense():
 
     return jsonify(new_expense.to_dict()), 201
 
-
+# READ ALL
 @app.route('/expenses', methods=['GET'])
 def get_expenses():
     expenses = Expense.query.all()
     return jsonify([e.to_dict() for e in expenses])
 
-
+# READ ONE
 @app.route('/expenses/<int:id>', methods=['GET'])
 def get_expense(id):
     expense = Expense.query.get_or_404(id)
     return jsonify(expense.to_dict())
 
-
+# UPDATE
 @app.route('/expenses/<int:id>', methods=['PUT'])
 def update_expense(id):
     expense = Expense.query.get_or_404(id)
@@ -64,7 +64,7 @@ def update_expense(id):
 
     return jsonify(expense.to_dict())
 
-
+# DELETE
 @app.route('/expenses/<int:id>', methods=['DELETE'])
 def delete_expense(id):
     expense = Expense.query.get_or_404(id)
@@ -74,34 +74,7 @@ def delete_expense(id):
 
     return jsonify({"message": "Deleted successfully"})
 
-
-# ✅ ALWAYS LAST
+# RUN APP (ALWAYS LAST)
 if __name__ == '__main__':
     app.run(debug=True)
 
-from flask import Flask
-from flask_cors import CORS
-from models import db
-
-app = Flask(__name__)
-CORS(app)
-
-# Database config (SQLite)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Connect database to app
-db.init_app(app)
-
-# Create database automatically
-with app.app_context():
-    db.create_all()
-
-# Test route
-@app.route('/')
-def home():
-    return "Expense Tracker API is running!"
-
-# Run app
-if __name__ == '__main__':
-    app.run(debug=True)
