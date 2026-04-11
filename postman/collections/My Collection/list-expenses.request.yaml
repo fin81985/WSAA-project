@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Expenses
+method: GET
+url: '{{baseUrl}}/expenses'
+order: 2000
