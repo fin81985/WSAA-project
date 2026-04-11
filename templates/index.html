@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Expense Tracker</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/style.css">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -9,26 +14,39 @@
 
 <body>
 
-    <h1>Expense Tracker</h1>
+<div class="container">
 
-    <h2>Total: €<span id="total">0</span></h2>
+    <h1>💰 Expense Tracker</h1>
 
-    <input id="amount" placeholder="Amount">
-    <input id="category" placeholder="Category">
-    <input id="description" placeholder="Description">
-    <input id="date" placeholder="Date">
+    <!-- Total -->
+    <div class="summary">
+        <h2>Total Spent: €<span id="total">0</span></h2>
+    </div>
 
-    <button id="submitBtn" onclick="addExpense()">Add Expense</button>
+    <!-- Form -->
+    <div class="form">
+        <input id="amount" placeholder="Amount">
+        <input id="category" placeholder="Category">
+        <input id="description" placeholder="Description">
+        <input id="date" type="date">
 
+        <button id="submitBtn" onclick="addExpense()">Add Expense</button>
+    </div>
+
+    <!-- Expense List -->
     <div id="expenseList"></div>
 
+    <!-- Chart -->
     <canvas id="expenseChart"></canvas>
 
-    <!-- Your JS -->
-    <script src="/static/script.js"></script>
+</div>
+
+<!-- JS -->
+<script src="/static/script.js"></script>
 
 </body>
 </html>
+
 
 
 
