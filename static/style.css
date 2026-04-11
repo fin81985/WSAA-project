@@ -1,61 +1,98 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f4f6f9;
+    background: #f4f6fb;
     margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #222;
+    margin-bottom: 10px;
 }
 
-h2 {
+.summary {
     text-align: center;
-    color: #444;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    font-size: 18px;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 input {
     padding: 10px;
-    margin: 5px;
-    width: 180px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    width: 180px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #0077ff;
 }
 
 button {
     padding: 10px 15px;
-    background: #2d6cdf;
+    background: #0077ff;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 button:hover {
-    background: #1b4fb5;
+    background: #005fd1;
 }
 
 #expenseList {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 15px;
     margin-top: 20px;
 }
 
 .card {
     background: white;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    transition: 0.2s;
+    border-left: 6px solid #0077ff;
 }
 
-.card p {
-    margin: 5px 0;
+.card:hover {
+    transform: translateY(-4px);
 }
+
+/* Category colors */
+.card.food { border-left-color: #2ecc71; }
+.card.transport { border-left-color: #3498db; }
+.card.shopping { border-left-color: #9b59b6; }
+.card.bills { border-left-color: #e67e22; }
+.card.entertainment { border-left-color: #e74c3c; }
 
 canvas {
-    max-width: 400px;
-    margin: 30px auto;
-    display: block;
+    margin-top: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
+
