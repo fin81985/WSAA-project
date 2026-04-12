@@ -89,6 +89,25 @@ function loadExpenses() {
             document.getElementById("expenseList").innerHTML = html;
             document.getElementById("total").innerText = total.toFixed(2);
 
+            // -------------------------
+            // TOP CATEGORY
+            // -------------------------
+            const topCategory = getTopCategory(data);
+
+            const cards = document.querySelectorAll(".summary-card");
+            if (cards.length >= 3) {
+                cards[2].querySelector("p").innerText = topCategory;
+            }
+
+            // -------------------------
+            // THIS MONTH TOTAL
+            // -------------------------
+            const thisMonthTotal = getThisMonthTotal(data);
+
+            if (cards.length >= 2) {
+                cards[1].querySelector("p").innerText = `€${thisMonthTotal.toFixed(2)}`;
+            }
+
             updateChart(data);
         });
 }
@@ -229,6 +248,54 @@ function updateChart(data) {
 }
 
 // -------------------------
+// TOP CATEGORY
+// -------------------------
+function getTopCategory(data) {
+    const categories = {};
+
+    data.forEach(expense => {
+        const cat = expense.category;
+        categories[cat] = (categories[cat] || 0) + parseFloat(expense.amount);
+    });
+
+    let topCategory = "-";
+    let max = 0;
+
+    for (let cat in categories) {
+        if (categories[cat] > max) {
+            max = categories[cat];
+            topCategory = cat;
+        }
+    }
+
+    return topCategory;
+}
+
+// -------------------------
+// THIS MONTH TOTAL
+// -------------------------
+function getThisMonthTotal(data) {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    let total = 0;
+
+    data.forEach(expense => {
+        const date = new Date(expense.date);
+
+        if (
+            date.getMonth() === currentMonth &&
+            date.getFullYear() === currentYear
+        ) {
+            total += parseFloat(expense.amount);
+        }
+    });
+
+    return total;
+}
+
+// -------------------------
 // SAFE STRING HANDLING
 // -------------------------
 function escapeQuotes(str) {
@@ -239,5 +306,6 @@ function escapeQuotes(str) {
 // INIT
 // -------------------------
 loadExpenses();
+
 
 
