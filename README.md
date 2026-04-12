@@ -1,5 +1,5 @@
-# 📄 Expense Tracker – Project Report (WSAA)
-
+#  Expense Tracker – Project Report (WSAA)
+![Expense Tracker Dashboard](static/images/dashboard.png)
 ---
 
 ## 1. Project Title
