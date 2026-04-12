@@ -1,25 +1,54 @@
 let chart = null;
 let editId = null;
 
-// Load all expenses
+// Category colors (used for cards + chart)
+const categoryColors = {
+    Food: "#FF6B6B",
+    Transport: "#4D96FF",
+    Bills: "#6BCB77",
+    Shopping: "#FFD93D",
+    Entertainment: "#9D4EDD",
+    Other: "#ADB5BD"
+};
+
+// -------------------------
+// LOAD EXPENSES
+// -------------------------
 function loadExpenses() {
     fetch('/expenses')
         .then(res => res.json())
         .then(data => {
+
             let html = "";
             let total = 0;
 
             data.forEach(expense => {
                 total += parseFloat(expense.amount);
 
+                const color = categoryColors[expense.category] || "#ccc";
+
                 html += `
-                    <div class="card">
+                    <div class="card"
+                        style="border-left: 6px solid ${color}; background: ${color}20;">
+
                         <p><b>€${expense.amount}</b></p>
-                        <p>${expense.category}</p>
+
+                        <p>
+                            <span class="badge" style="background:${color}">
+                                ${expense.category}
+                            </span>
+                        </p>
+
                         <p>${expense.description}</p>
                         <p>${expense.date}</p>
 
-                        <button onclick="startEdit(${expense.id}, ${expense.amount}, '${expense.category}', '${expense.description}', '${expense.date}')">
+                        <button onclick="startEdit(
+                            ${expense.id},
+                            ${expense.amount},
+                            '${escapeQuotes(expense.category)}',
+                            '${escapeQuotes(expense.description)}',
+                            '${expense.date}'
+                        )">
                             Edit
                         </button>
 
@@ -37,7 +66,9 @@ function loadExpenses() {
         });
 }
 
-// Add or UPDATE expense
+// -------------------------
+// ADD OR UPDATE EXPENSE
+// -------------------------
 function addExpense() {
     const expense = {
         amount: parseFloat(document.getElementById("amount").value),
@@ -46,33 +77,27 @@ function addExpense() {
         date: document.getElementById("date").value
     };
 
-    if (editId !== null) {
-        fetch(`/expenses/${editId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(expense)
-        }).then(() => {
-            resetForm();
-            loadExpenses();
-        });
+    if (!expense.amount || !expense.category) return;
 
-    } else {
-        fetch('/expenses', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(expense)
-        }).then(() => {
-            resetForm();
-            loadExpenses();
-        });
-    }
+    const url = editId !== null ? `/expenses/${editId}` : '/expenses';
+    const method = editId !== null ? 'PUT' : 'POST';
+
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(expense)
+    })
+    .then(() => {
+        resetForm();
+        loadExpenses();
+    });
 }
 
-// Start editing
+// -------------------------
+// EDIT EXPENSE
+// -------------------------
 function startEdit(id, amount, category, description, date) {
     editId = id;
 
@@ -83,50 +108,47 @@ function startEdit(id, amount, category, description, date) {
 
     document.getElementById("submitBtn").innerText = "Update Expense";
 }
-const categoryColors = {
-    Food: "#FF6B6B",
-    Transport: "#4D96FF",
-    Bills: "#6BCB77",
-    Shopping: "#FFD93D",
-    Entertainment: "#9D4EDD",
-    Other: "#ADB5BD"
-};
 
-// Reset form
+// -------------------------
+// RESET FORM
+// -------------------------
 function resetForm() {
     editId = null;
 
     document.getElementById("amount").value = "";
-    document.getElementById("category").value = "";
+    document.getElementById("category").value = "Food";
     document.getElementById("description").value = "";
     document.getElementById("date").value = "";
 
     document.getElementById("submitBtn").innerText = "Add Expense";
 }
 
-// Delete expense
+// -------------------------
+// DELETE EXPENSE
+// -------------------------
 function deleteExpense(id) {
     fetch(`/expenses/${id}`, {
         method: 'DELETE'
     }).then(() => loadExpenses());
 }
 
-// Chart
+// -------------------------
+// UPDATE CHART
+// -------------------------
 function updateChart(data) {
     const categories = {};
 
     data.forEach(expense => {
         const cat = expense.category;
-
-        if (categories[cat]) {
-            categories[cat] += parseFloat(expense.amount);
-        } else {
-            categories[cat] = parseFloat(expense.amount);
-        }
+        categories[cat] = (categories[cat] || 0) + parseFloat(expense.amount);
     });
 
     const labels = Object.keys(categories);
     const values = Object.values(categories);
+
+    const colors = labels.map(
+        label => categoryColors[label] || "#ccc"
+    );
 
     const canvas = document.getElementById('expenseChart');
     if (!canvas) return;
@@ -142,11 +164,22 @@ function updateChart(data) {
         data: {
             labels: labels,
             datasets: [{
-                data: values
+                data: values,
+                backgroundColor: colors
             }]
         }
     });
 }
 
-// Load on start
+// -------------------------
+// SAFETY: ESCAPE QUOTES
+// -------------------------
+function escapeQuotes(str) {
+    return String(str).replace(/'/g, "\\'");
+}
+
+// -------------------------
+// INITIAL LOAD
+// -------------------------
 loadExpenses();
+
