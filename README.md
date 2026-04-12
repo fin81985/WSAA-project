@@ -87,8 +87,7 @@ The application follows a **client-server architecture**:
     python app.py
     ```
 3.  **Open browser:**
-    Visit (http://127.0.0.1:5000/)[http://127.0.0.1:5000/
-    ]
+    Visit  (http://127.0.0.1:5000/) [http://127.0.0.1:5000/]
 
 ## 10. Testing
 Testing was conducted using:
