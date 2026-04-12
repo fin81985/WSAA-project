@@ -1,15 +1,42 @@
 let chart = null;
 let editId = null;
 
-// Category colors (used for cards + chart)
+// -------------------------
+// CATEGORY COLORS
+// -------------------------
 const categoryColors = {
     Food: "#FF6B6B",
     Transport: "#4D96FF",
     Bills: "#6BCB77",
     Shopping: "#FFD93D",
     Entertainment: "#9D4EDD",
-    Other: "#ADB5BD"
+    Other: "#ADB5BD",
+    Health: "#FF922B",
+    Travel: "#20C997",
+    Work: "#4C6EF5",
+    Gifts: "#F06595",
+    Education: "#339AF0",
+    Personal: "#845EF7",
+    Savings: "#51CF66",
+    Utilities: "#FFB703"
 };
+
+// -------------------------
+// AUTO COLOR GENERATOR
+// -------------------------
+function getColorForCategory(category) {
+    if (categoryColors[category]) {
+        return categoryColors[category];
+    }
+
+    let hash = 0;
+    for (let i = 0; i < category.length; i++) {
+        hash = category.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 60%)`;
+}
 
 // -------------------------
 // LOAD EXPENSES
@@ -25,7 +52,7 @@ function loadExpenses() {
             data.forEach(expense => {
                 total += parseFloat(expense.amount);
 
-                const color = categoryColors[expense.category] || "#ccc";
+                const color = getColorForCategory(expense.category);
 
                 html += `
                     <div class="card"
@@ -67,7 +94,7 @@ function loadExpenses() {
 }
 
 // -------------------------
-// ADD OR UPDATE EXPENSE
+// ADD / UPDATE EXPENSE
 // -------------------------
 function addExpense() {
     const expense = {
@@ -88,15 +115,14 @@ function addExpense() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(expense)
-    })
-    .then(() => {
+    }).then(() => {
         resetForm();
         loadExpenses();
     });
 }
 
 // -------------------------
-// EDIT EXPENSE
+// EDIT
 // -------------------------
 function startEdit(id, amount, category, description, date) {
     editId = id;
@@ -124,7 +150,7 @@ function resetForm() {
 }
 
 // -------------------------
-// DELETE EXPENSE
+// DELETE
 // -------------------------
 function deleteExpense(id) {
     fetch(`/expenses/${id}`, {
@@ -133,7 +159,7 @@ function deleteExpense(id) {
 }
 
 // -------------------------
-// UPDATE CHART
+// PREMIUM DOUGHNUT CHART
 // -------------------------
 function updateChart(data) {
     const categories = {};
@@ -146,9 +172,7 @@ function updateChart(data) {
     const labels = Object.keys(categories);
     const values = Object.values(categories);
 
-    const colors = labels.map(
-        label => categoryColors[label] || "#ccc"
-    );
+    const colors = labels.map(label => getColorForCategory(label));
 
     const canvas = document.getElementById('expenseChart');
     if (!canvas) return;
@@ -159,27 +183,61 @@ function updateChart(data) {
         chart.destroy();
     }
 
+    const total = values.reduce((a, b) => a + b, 0);
+
     chart = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: labels,
             datasets: [{
                 data: values,
-                backgroundColor: colors
+                backgroundColor: colors,
+                borderColor: "#ffffff",
+                borderWidth: 3,
+                hoverOffset: 20
             }]
+        },
+        options: {
+            responsive: true,
+            cutout: "60%",
+
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: "circle",
+                        padding: 18,
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            const percent = ((value / total) * 100).toFixed(1);
+                            return `€${value} (${percent}%)`;
+                        }
+                    }
+                }
+            }
         }
     });
 }
 
 // -------------------------
-// SAFETY: ESCAPE QUOTES
+// SAFE STRING HANDLING
 // -------------------------
 function escapeQuotes(str) {
     return String(str).replace(/'/g, "\\'");
 }
 
 // -------------------------
-// INITIAL LOAD
+// INIT
 // -------------------------
 loadExpenses();
+
 
