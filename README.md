@@ -99,12 +99,6 @@ Testing was conducted using:
 * **Postman:** API endpoint validation and payload testing.
 * **Manual:** Input validation and data persistence checks.
 
-## 11. Future Improvements
-* User authentication system (Login/Signup)
-* Monthly budget limits and alerts
-* Data filtering by category or date range
-* Export reports to CSV/PDF
-* Cloud deployment (Azure/Render)
 
 ---
 
