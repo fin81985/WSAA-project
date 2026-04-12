@@ -83,6 +83,14 @@ function startEdit(id, amount, category, description, date) {
 
     document.getElementById("submitBtn").innerText = "Update Expense";
 }
+const categoryColors = {
+    Food: "#FF6B6B",
+    Transport: "#4D96FF",
+    Bills: "#6BCB77",
+    Shopping: "#FFD93D",
+    Entertainment: "#9D4EDD",
+    Other: "#ADB5BD"
+};
 
 // Reset form
 function resetForm() {

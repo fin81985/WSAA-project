@@ -88,6 +88,24 @@ button:hover {
 .card.bills { border-left-color: #e67e22; }
 .card.entertainment { border-left-color: #e74c3c; }
 
+.expense-card {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.expense-card:hover {
+    transform: scale(1.02);
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
 canvas {
     margin-top: 30px;
     background: white;
