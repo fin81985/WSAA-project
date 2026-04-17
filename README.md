@@ -106,6 +106,7 @@ Testing was conducted using:
 This project successfully demonstrates a full-stack web application using Flask REST API, SQLite database, and a JavaScript frontend. It validates a core understanding of backend development, API design, and seamless frontend integration.
 
 ## 13. References
+
 * [Flask Documentation](https://flask.palletsprojects.com/)
 * [SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)
 * [MDN Web Docs](https://developer.mozilla.org/)
