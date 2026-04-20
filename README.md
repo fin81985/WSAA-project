@@ -92,8 +92,12 @@ Open your browser and visit:
 
 [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
+## 10. Deployment
 
-## 10. Testing
+The application can be deployed using the platform PythonAnywhere, allowing it to be accessed without running it locally.
+[https://fin81985.pythonanywhere.com/](https://fin81985.pythonanywhere.com/)
+
+## 11. Testing
 Testing was conducted using:
 * **Browser:** Frontend interaction and UI responsiveness.
 * **Postman:** API endpoint validation and payload testing.
