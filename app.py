@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from models import db, Expense
@@ -8,7 +9,8 @@ CORS(app)
 # ======================
 # DATABASE CONFIG
 # ======================
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'expenses.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
